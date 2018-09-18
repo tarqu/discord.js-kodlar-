@@ -86,6 +86,14 @@ client.on('message', msg => {
   }
 });
 
+client.on("messageDelete", async msg  => {
+    if (msg.attachments.size > 0) {
+        msg.guild.channels.find(c => c.name == "log").send(`**#${msg.channel.id}> kanalında ${msg.author.tag} \`${msg.author.id}\` tarafından gönderilen bir dosya silindi.`, {
+            file: msg.attachments.first().url
+        })
+    }
+});
+
 client.on('message', async message => {
     if (message.content.toLowerCase() === prefix + 'döviz') {
 var request = require('request');
