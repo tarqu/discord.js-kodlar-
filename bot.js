@@ -113,6 +113,32 @@ request('https://www.doviz.com/api/v1/currencies/EUR/latest', function (error, r
     }
 });
 
+bot.on("message", async (message, member, guild) => {
+  db.fetch(`guildPrefix_${message.guild.id}`).then(i => {
+
+    
+    
+  let prefix;
+
+  if (i) {
+    prefix = i
+  } else {
+    prefix = 'KENDİ PREFİXİN KARDEŞİMMMM';
+
+  }
+    if(!message.content.startsWith(prefix)) return;
+  if (message.channel.type != 'text') return message.channel.send('Lütfen komutları sunucularda kullanın.');
+
+  let messageArray = message.content.split(" ");
+  let cmd = messageArray[0];
+
+
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+
+  let commandfile = bot.commands.get(cmd.slice(prefix.length));
+  if(commandfile) commandfile.run(bot, message, args)
+})});
 
 const { Client, Util } = require('discord.js');
 const { TOKEN, PREFIX, GOOGLE_API_KEY } = require('./config');
